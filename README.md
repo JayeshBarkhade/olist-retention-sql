@@ -158,11 +158,4 @@ Runtime is roughly one minute. Every step writes its output to `results/`.
 * `q12` assumptions (25% margin, R$10 voucher, R$0.40 contact cost, 2 to 8% reactivation) are placeholders, not data.
 * The benchmark ran on one machine with a warm cache and a small dataset.
 
-## Resume bullet (honest version)
-
-> Built an end-to-end PostgreSQL analytics project on a synthetic Olist-style marketplace dataset (8 tables, ~98K
-> orders): normalized schema with constraints, SQL data cleaning and validation, 13 analytical queries (cohort
-> retention, RFM, window functions, LATERAL, percentiles), and a win-back ROI model; cut a customer-history query from
-> 17 ms to 0.2 ms with indexing (`EXPLAIN ANALYZE`) and verified results against an independent pandas recomputation.
-
 If you rerun it on the real Olist data, replace "synthetic" and add real findings.
