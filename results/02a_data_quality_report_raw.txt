@@ -1,0 +1,12 @@
+                          issue                           | affected_rows |                                     handling                                     
+----------------------------------------------------------+---------------+----------------------------------------------------------------------------------
+ Duplicate review rows (same review_id appears twice)     |          1089 | Kept one row per order (latest answer timestamp) via ROW_NUMBER()
+ Orders with more than one distinct review_id             |           454 | Kept the most recent review only
+ Delivered timestamp earlier than purchase timestamp      |            70 | delivered_ts set to NULL, row kept, dq_flag = delivered_before_purchase
+ Status = delivered but delivery date missing             |           120 | Row kept, dq_flag = delivered_missing_date; excluded from delivery-time analysis
+ Orders with no order_items rows                          |           553 | Kept (cancelled/unavailable orders); excluded from revenue by joining to items
+ City names needing normalisation (case, spaces, accents) |          6307 | lower(translate(trim(city))) in the transform
+ Products with missing category                           |            46 | category_name left NULL; reported as "unknown" in analysis
+ Customers rows vs real people (customer_id is per ORDER) |         17902 | Not an error: analysis must group by customer_unique_id
+(8 rows)
+

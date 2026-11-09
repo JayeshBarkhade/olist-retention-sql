@@ -1,0 +1,16 @@
+                   category                    | months_with_zero_sales | months_in_range | pct_months_zero 
+-----------------------------------------------+------------------------+-----------------+-----------------
+ cds_dvds_musicais                             |                     16 |              20 |              80
+ fashion_roupa_masculina                       |                     16 |              20 |              80
+ artes_e_artesanato                            |                     14 |              20 |              70
+ la_cuisine                                    |                     14 |              20 |              70
+ portateis_cozinha_e_preparadores_de_alimentos |                     14 |              20 |              70
+ fashion_esporte                               |                     13 |              20 |              65
+ casa_conforto                                 |                     12 |              20 |              60
+ flores                                        |                     12 |              20 |              60
+ musica                                        |                     12 |              20 |              60
+ artes                                         |                     11 |              20 |              55
+ pc_gamer                                      |                     11 |              20 |              55
+ seguros_e_servicos                            |                     11 |              20 |              55
+(12 rows)
+

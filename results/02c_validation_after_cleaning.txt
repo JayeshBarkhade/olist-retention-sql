@@ -1,0 +1,17 @@
+                     check_name                      | problems 
+-----------------------------------------------------+----------
+ row count: sellers                                  |      950
+ row count: products                                 |     3324
+ row count: order_payments                           |   102113
+ row count: order_reviews                            |    90753
+ row count: customers                                |    97902
+ rows repaired and flagged in orders (informational) |      190
+ row count: orders                                   |    97902
+ delivered_ts before purchase_ts                     |        0
+ row count: order_items                              |   127503
+ items without a product (orphans)                   |        0
+ orders with more than one review                    |        0
+ orders without a customer (orphans)                 |        0
+ payment total <> items total (delivered orders)     |        0
+(13 rows)
+

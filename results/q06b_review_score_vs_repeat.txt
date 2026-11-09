@@ -1,0 +1,7 @@
+ first_order_review | customers | repeat_rate_pct 
+--------------------+-----------+-----------------
+ 1-2 stars          |      4285 |            11.5
+ 3 stars            |      3688 |            13.8
+ 4-5 stars          |     34202 |            24.7
+(3 rows)
+

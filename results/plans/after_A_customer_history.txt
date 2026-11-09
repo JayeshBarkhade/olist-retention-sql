@@ -1,0 +1,28 @@
+Sort  (cost=17.55..17.56 rows=1 width=82) (actual time=0.145..0.146 rows=6 loops=1)
+  Sort Key: o.purchase_ts
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=58
+  ->  GroupAggregate  (cost=17.52..17.54 rows=1 width=82) (actual time=0.124..0.131 rows=6 loops=1)
+        Group Key: o.order_id
+        Buffers: shared hit=55
+        ->  Sort  (cost=17.52..17.52 rows=1 width=62) (actual time=0.117..0.118 rows=7 loops=1)
+              Sort Key: o.order_id
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=55
+              ->  Nested Loop Left Join  (cost=1.25..17.51 rows=1 width=62) (actual time=0.038..0.099 rows=7 loops=1)
+                    Buffers: shared hit=52
+                    ->  Nested Loop  (cost=0.83..16.88 rows=1 width=50) (actual time=0.025..0.050 rows=6 loops=1)
+                          Buffers: shared hit=28
+                          ->  Index Scan using idx_customers_unique_id on customers c  (cost=0.42..8.44 rows=1 width=33) (actual time=0.010..0.011 rows=6 loops=1)
+                                Index Cond: (customer_unique_id = '4c642bd1d7afc15c4dc387c9b693180b'::bpchar)
+                                Buffers: shared hit=4
+                          ->  Index Scan using idx_orders_customer_purchase on orders o  (cost=0.42..8.44 rows=1 width=83) (actual time=0.005..0.005 rows=1 loops=6)
+                                Index Cond: (customer_id = c.customer_id)
+                                Buffers: shared hit=24
+                    ->  Index Scan using order_items_pkey on order_items i  (cost=0.42..0.61 rows=2 width=45) (actual time=0.007..0.008 rows=1 loops=6)
+                          Index Cond: (order_id = o.order_id)
+                          Buffers: shared hit=24
+Planning:
+  Buffers: shared hit=299
+Planning Time: 0.831 ms
+Execution Time: 0.220 ms

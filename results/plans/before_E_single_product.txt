@@ -1,0 +1,10 @@
+Aggregate  (cost=4198.26..4198.27 rows=1 width=48) (actual time=11.397..11.398 rows=1 loops=1)
+  Buffers: shared hit=2603
+  ->  Seq Scan on order_items  (cost=0.00..4196.79 rows=196 width=14) (actual time=0.013..11.342 rows=150 loops=1)
+        Filter: (product_id = '63eb65d07239e56d0af66d47cdb72f5c'::bpchar)
+        Rows Removed by Filter: 127353
+        Buffers: shared hit=2603
+Planning:
+  Buffers: shared hit=129
+Planning Time: 0.348 ms
+Execution Time: 11.441 ms

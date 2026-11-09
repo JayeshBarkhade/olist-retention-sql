@@ -1,0 +1,10 @@
+check                                             pandas      postgres  result
+delivered revenue (R$)                     18,424,429.61 18,424,429.61  OK
+delivered orders                                  93,250        93,250  OK
+customers with a delivered order                  76,297        76,297  OK
+Q8 top-20% revenue share (%)                        49.4          49.4  OK
+Q6 customers (On time)                            39,799        39,799  OK
+Q6 repeat rate % (On time)                          23.9          23.9  OK
+Q6 customers (Late)                                3,687         3,687  OK
+Q6 repeat rate % (Late)                              5.8           5.8  OK
+RFM: mv_rfm segment sizes == Q3                        1             1  OK

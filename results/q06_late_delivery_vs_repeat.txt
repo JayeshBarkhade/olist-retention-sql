@@ -1,0 +1,6 @@
+ first_delivery | customers | repeat_buyers | repeat_rate_pct 
+----------------+-----------+---------------+-----------------
+ On time        |     39799 |          9508 |            23.9
+ Late           |      3687 |           213 |             5.8
+(2 rows)
+

@@ -1,0 +1,135 @@
+GroupAggregate  (cost=49806.94..49808.17 rows=2 width=81) (actual time=825.791..828.632 rows=2 loops=1)
+  Group Key: e.is_late
+  Buffers: shared hit=424759, temp read=2558 written=4320
+  CTE eligible
+    ->  Nested Loop  (cost=32746.08..42601.95 rows=119 width=66) (actual time=360.615..423.458 rows=43486 loops=1)
+          Join Filter: (f.purchase_ts <= ((max(o_1.purchase_ts)) - '180 days'::interval))
+          Rows Removed by Join Filter: 32654
+          Buffers: shared hit=17067, temp read=2005 written=3415
+          ->  Finalize Aggregate  (cost=13581.07..13581.08 rows=1 width=8) (actual time=156.306..157.318 rows=1 loops=1)
+                Buffers: shared hit=8519, temp read=478 written=1182
+                ->  Gather  (cost=13580.96..13581.07 rows=1 width=8) (actual time=155.524..157.311 rows=2 loops=1)
+                      Workers Planned: 1
+                      Workers Launched: 1
+                      Buffers: shared hit=8519, temp read=478 written=1182
+                      ->  Partial Aggregate  (cost=12580.96..12580.97 rows=1 width=8) (actual time=153.563..153.571 rows=1 loops=2)
+                            Buffers: shared hit=8519, temp read=478 written=1182
+                            ->  Parallel Hash Join  (cost=9597.64..12465.59 rows=46149 width=8) (actual time=112.731..150.812 rows=46625 loops=2)
+                                  Hash Cond: (o_1.customer_id = c_1.customer_id)
+                                  Buffers: shared hit=8519, temp read=478 written=1182
+                                  ->  Hash Join  (cost=6874.88..9621.69 rows=46149 width=41) (actual time=96.309..119.689 rows=46625 loops=2)
+                                        Hash Cond: (o_1.order_id = v.order_id)
+                                        Buffers: shared hit=7089, temp read=478 written=1182
+                                        ->  Parallel Seq Scan on orders o_1  (cost=0.00..2602.87 rows=54829 width=74) (actual time=0.009..6.837 rows=46625 loops=2)
+                                              Filter: (order_status = 'delivered'::text)
+                                              Rows Removed by Filter: 2326
+                                              Buffers: shared hit=1883
+                                        ->  Hash  (cost=5844.85..5844.85 rows=82403 width=33) (actual time=95.761..95.764 rows=97349 loops=2)
+                                              Buckets: 131072  Batches: 1  Memory Usage: 7204kB
+                                              Buffers: shared hit=5206, temp read=478 written=1182
+                                              ->  Subquery Scan on v  (cost=4196.79..5844.85 rows=82403 width=33) (actual time=46.569..75.066 rows=97349 loops=2)
+                                                    Buffers: shared hit=5206, temp read=478 written=1182
+                                                    ->  HashAggregate  (cost=4196.79..5020.82 rows=82403 width=137) (actual time=46.568..65.510 rows=97349 loops=2)
+                                                          Group Key: order_items_1.order_id
+                                                          Batches: 5  Memory Usage: 8241kB  Disk Usage: 3360kB
+                                                          Buffers: shared hit=5206, temp read=478 written=1182
+                                                          Worker 0:  Batches: 5  Memory Usage: 8241kB  Disk Usage: 3360kB
+                                                          ->  Seq Scan on order_items order_items_1  (cost=0.00..3878.03 rows=127503 width=33) (actual time=0.011..10.313 rows=127503 loops=2)
+                                                                Buffers: shared hit=5206
+                                  ->  Parallel Hash  (cost=2002.89..2002.89 rows=57589 width=33) (actual time=16.016..16.017 rows=48951 loops=2)
+                                        Buckets: 131072  Batches: 1  Memory Usage: 7968kB
+                                        Buffers: shared hit=1427
+                                        ->  Parallel Seq Scan on customers c_1  (cost=0.00..2002.89 rows=57589 width=33) (actual time=0.006..4.906 rows=48951 loops=2)
+                                              Buffers: shared hit=1427
+          ->  Subquery Scan on f  (cost=19165.01..29015.52 rows=357 width=66) (actual time=204.302..253.511 rows=76140 loops=1)
+                Filter: (f.dq_flag IS NULL)
+                Rows Removed by Filter: 157
+                Buffers: shared hit=8548, temp read=1527 written=2233
+                ->  Unique  (cost=19165.01..28302.48 rows=71304 width=66) (actual time=204.299..243.670 rows=76297 loops=1)
+                      Buffers: shared hit=8548, temp read=1527 written=2233
+                      ->  Gather Merge  (cost=19165.01..28106.34 rows=78453 width=66) (actual time=204.298..230.793 rows=93250 loops=1)
+                            Workers Planned: 1
+                            Workers Launched: 1
+                            Buffers: shared hit=8548, temp read=1527 written=2233
+                            ->  Sort  (cost=18165.00..18280.37 rows=46149 width=66) (actual time=199.457..206.526 rows=46625 loops=2)
+                                  Sort Key: c_2.customer_unique_id, o_2.purchase_ts
+                                  Sort Method: external sort  Disk: 2808kB
+                                  Buffers: shared hit=8548, temp read=1527 written=2233
+                                  Worker 0:  Sort Method: external merge  Disk: 2776kB
+                                  ->  Parallel Hash Join  (cost=9597.64..12696.33 rows=46149 width=66) (actual time=115.279..158.239 rows=46625 loops=2)
+                                        Hash Cond: (o_2.customer_id = c_2.customer_id)
+                                        Buffers: shared hit=8534, temp read=478 written=1182
+                                        ->  Hash Join  (cost=6874.88..9621.69 rows=46149 width=77) (actual time=94.027..119.980 rows=46625 loops=2)
+                                              Hash Cond: (o_2.order_id = v_1.order_id)
+                                              Buffers: shared hit=7089, temp read=478 written=1182
+                                              ->  Parallel Seq Scan on orders o_2  (cost=0.00..2602.87 rows=54829 width=110) (actual time=0.007..7.561 rows=46625 loops=2)
+                                                    Filter: (order_status = 'delivered'::text)
+                                                    Rows Removed by Filter: 2326
+                                                    Buffers: shared hit=1883
+                                              ->  Hash  (cost=5844.85..5844.85 rows=82403 width=33) (actual time=93.732..93.735 rows=97349 loops=2)
+                                                    Buckets: 131072  Batches: 1  Memory Usage: 7204kB
+                                                    Buffers: shared hit=5206, temp read=478 written=1182
+                                                    ->  Subquery Scan on v_1  (cost=4196.79..5844.85 rows=82403 width=33) (actual time=45.479..73.064 rows=97349 loops=2)
+                                                          Buffers: shared hit=5206, temp read=478 written=1182
+                                                          ->  HashAggregate  (cost=4196.79..5020.82 rows=82403 width=137) (actual time=45.477..64.239 rows=97349 loops=2)
+                                                                Group Key: order_items_2.order_id
+                                                                Batches: 5  Memory Usage: 8241kB  Disk Usage: 3360kB
+                                                                Buffers: shared hit=5206, temp read=478 written=1182
+                                                                Worker 0:  Batches: 5  Memory Usage: 8241kB  Disk Usage: 3360kB
+                                                                ->  Seq Scan on order_items order_items_2  (cost=0.00..3878.03 rows=127503 width=33) (actual time=0.012..9.797 rows=127503 loops=2)
+                                                                      Buffers: shared hit=5206
+                                        ->  Parallel Hash  (cost=2002.89..2002.89 rows=57589 width=66) (actual time=20.815..20.816 rows=48951 loops=2)
+                                              Buckets: 131072  Batches: 1  Memory Usage: 11040kB
+                                              Buffers: shared hit=1427
+                                              ->  Parallel Seq Scan on customers c_2  (cost=0.00..2002.89 rows=57589 width=66) (actual time=0.007..5.438 rows=48951 loops=2)
+                                                    Buffers: shared hit=1427
+  ->  Sort  (cost=7204.98..7205.28 rows=119 width=133) (actual time=820.545..822.626 rows=43486 loops=1)
+        Sort Key: e.is_late
+        Sort Method: quicksort  Memory: 3199kB
+        Buffers: shared hit=420547, temp read=1972 written=3381
+        ->  Hash Left Join  (cost=7198.18..7200.88 rows=119 width=133) (actual time=802.890..815.328 rows=43486 loops=1)
+              Hash Cond: (e.customer_unique_id = e_1.customer_unique_id)
+              Buffers: shared hit=420542, temp read=1972 written=3381
+              ->  CTE Scan on eligible e  (cost=0.00..2.38 rows=119 width=133) (actual time=360.619..364.470 rows=43486 loops=1)
+                    Buffers: shared hit=12855, temp read=1383 written=2477
+              ->  Hash  (cost=7198.00..7198.00 rows=14 width=132) (actual time=442.256..442.262 rows=9721 loops=1)
+                    Buckets: 16384 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 746kB
+                    Buffers: shared hit=407687, temp read=589 written=904
+                    ->  Unique  (cost=7197.93..7198.00 rows=14 width=132) (actual time=439.269..441.343 rows=9721 loops=1)
+                          Buffers: shared hit=407687, temp read=589 written=904
+                          ->  Sort  (cost=7197.93..7197.97 rows=14 width=132) (actual time=439.267..439.807 rows=10653 loops=1)
+                                Sort Key: e_1.customer_unique_id
+                                Sort Method: quicksort  Memory: 884kB
+                                Buffers: shared hit=407687, temp read=589 written=904
+                                ->  Hash Join  (cost=5240.45..7197.67 rows=14 width=132) (actual time=397.352..433.200 rows=10653 loops=1)
+                                      Hash Cond: (order_items.order_id = o.order_id)
+                                      Buffers: shared hit=407687, temp read=589 written=904
+                                      ->  HashAggregate  (cost=4196.79..5020.82 rows=82403 width=137) (actual time=47.133..67.349 rows=97349 loops=1)
+                                            Group Key: order_items.order_id
+                                            Batches: 5  Memory Usage: 8241kB  Disk Usage: 3360kB
+                                            Buffers: shared hit=2603, temp read=239 written=591
+                                            ->  Seq Scan on order_items  (cost=0.00..3878.03 rows=127503 width=33) (actual time=0.006..9.478 rows=127503 loops=1)
+                                                  Buffers: shared hit=2603
+                                      ->  Hash  (cost=1043.45..1043.45 rows=17 width=165) (actual time=350.198..350.201 rows=10653 loops=1)
+                                            Buckets: 16384 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 1148kB
+                                            Buffers: shared hit=405084, temp read=350 written=313
+                                            ->  Nested Loop  (cost=0.83..1043.45 rows=17 width=165) (actual time=0.198..346.494 rows=10653 loops=1)
+                                                  Join Filter: ((o.purchase_ts > e_1.purchase_ts) AND (o.purchase_ts <= (e_1.purchase_ts + '180 days'::interval)))
+                                                  Rows Removed by Join Filter: 46594
+                                                  Buffers: shared hit=405084, temp read=350 written=313
+                                                  ->  Nested Loop  (cost=0.42..951.34 rows=163 width=173) (actual time=0.028..186.028 rows=57733 loops=1)
+                                                        Buffers: shared hit=174152, temp read=350 written=313
+                                                        ->  CTE Scan on eligible e_1  (cost=0.00..2.38 rows=119 width=140) (actual time=0.001..75.556 rows=43486 loops=1)
+                                                              Buffers: temp read=350 written=313
+                                                        ->  Index Scan using idx_customers_unique_id on customers c  (cost=0.42..7.96 rows=1 width=66) (actual time=0.002..0.002 rows=1 loops=43486)
+                                                              Index Cond: (customer_unique_id = e_1.customer_unique_id)
+                                                              Buffers: shared hit=174152
+                                                  ->  Index Scan using idx_orders_customer_purchase on orders o  (cost=0.42..0.55 rows=1 width=74) (actual time=0.002..0.002 rows=1 loops=57733)
+                                                        Index Cond: (customer_id = c.customer_id)
+                                                        Filter: (order_status = 'delivered'::text)
+                                                        Rows Removed by Filter: 0
+                                                        Buffers: shared hit=230932
+Planning:
+  Buffers: shared hit=336
+Planning Time: 1.815 ms
+Execution Time: 832.854 ms

@@ -1,0 +1,20 @@
+digraph ERD {
+  rankdir=LR; bgcolor="#fcfcfb"; fontname="Helvetica";
+  node [shape=plaintext, fontname="Helvetica", fontsize=10];
+  edge [color="#52514e", arrowsize=0.7];
+  customers [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white"><TR><TD BGCOLOR="#2a78d6"><FONT COLOR="white"><B>customers</B></FONT></TD></TR><TR><TD ALIGN="LEFT" PORT="pk"><B>PK</B> customer_id  (one per ORDER)</TD></TR><TR><TD ALIGN="LEFT">customer_unique_id  (the real person)</TD></TR><TR><TD ALIGN="LEFT">zip_code_prefix, city, state</TD></TR></TABLE>>];
+  orders [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white"><TR><TD BGCOLOR="#2a78d6"><FONT COLOR="white"><B>orders</B></FONT></TD></TR><TR><TD ALIGN="LEFT" PORT="pk"><B>PK</B> order_id</TD></TR><TR><TD ALIGN="LEFT" PORT="fk"><B>FK</B> customer_id</TD></TR><TR><TD ALIGN="LEFT">order_status (CHECK)</TD></TR><TR><TD ALIGN="LEFT">purchase_ts, approved_ts, carrier_ts,<BR ALIGN="LEFT"/>delivered_ts (CHECK &gt;= purchase_ts),<BR ALIGN="LEFT"/>estimated_delivery_date, dq_flag<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+  order_items [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white"><TR><TD BGCOLOR="#2a78d6"><FONT COLOR="white"><B>order_items</B></FONT></TD></TR><TR><TD ALIGN="LEFT" PORT="pk"><B>PK</B> (order_id, order_item_id)</TD></TR><TR><TD ALIGN="LEFT" PORT="o"><B>FK</B> order_id</TD></TR><TR><TD ALIGN="LEFT" PORT="p"><B>FK</B> product_id</TD></TR><TR><TD ALIGN="LEFT" PORT="s"><B>FK</B> seller_id</TD></TR><TR><TD ALIGN="LEFT">price, freight_value (CHECK &gt;= 0)</TD></TR></TABLE>>];
+  order_payments [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white"><TR><TD BGCOLOR="#2a78d6"><FONT COLOR="white"><B>order_payments</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK/FK</B> (order_id, payment_sequential)</TD></TR><TR><TD ALIGN="LEFT">payment_type, installments, value</TD></TR></TABLE>>];
+  order_reviews [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white"><TR><TD BGCOLOR="#2a78d6"><FONT COLOR="white"><B>order_reviews</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> review_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK, UNIQUE</B> order_id  (1 review per order)</TD></TR><TR><TD ALIGN="LEFT">review_score (1-5), comments, timestamps</TD></TR></TABLE>>];
+  products [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white"><TR><TD BGCOLOR="#2a78d6"><FONT COLOR="white"><B>products</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> product_id</TD></TR><TR><TD ALIGN="LEFT"><B>FK</B> category_name (nullable)</TD></TR><TR><TD ALIGN="LEFT">weight_g, dimensions, photos_qty</TD></TR></TABLE>>];
+  sellers [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white"><TR><TD BGCOLOR="#2a78d6"><FONT COLOR="white"><B>sellers</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> seller_id</TD></TR><TR><TD ALIGN="LEFT">zip_code_prefix, city, state</TD></TR></TABLE>>];
+  product_category_translation [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4" BGCOLOR="white"><TR><TD BGCOLOR="#2a78d6"><FONT COLOR="white"><B>product_category_translation</B></FONT></TD></TR><TR><TD ALIGN="LEFT"><B>PK</B> category_name</TD></TR><TR><TD ALIGN="LEFT">category_name_english</TD></TR></TABLE>>];
+  orders -> customers [label=" N : 1", fontsize=9];
+  order_items -> orders [label=" N : 1", fontsize=9];
+  order_payments -> orders [label=" N : 1", fontsize=9];
+  order_reviews -> orders [label=" 1 : 1", fontsize=9];
+  order_items -> products [label=" N : 1", fontsize=9];
+  order_items -> sellers [label=" N : 1", fontsize=9];
+  products -> product_category_translation [label=" N : 1", fontsize=9];
+}

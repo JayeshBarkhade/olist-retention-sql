@@ -1,0 +1,24 @@
+-- customer_profile() for the top spender
+ orders | total_spend_rs | first_order | last_order | avg_review |     segment      
+--------+----------------+-------------+------------+------------+------------------
+      2 |        5043.41 | 2017-05-09  | 2018-01-24 |       2.00 | 2 Loyal (repeat)
+(1 row)
+
+-- get_customer_segment() for the same customer
+     segment      
+------------------
+ 2 Loyal (repeat)
+(1 row)
+
+-- sanity: segment sizes from the materialised view (must match Q3)
+                segment                | customers 
+---------------------------------------+-----------
+ 1 Champions (repeat, recent)          |      6621
+ 2 Loyal (repeat)                      |      5827
+ 3 At-risk repeat buyers               |      1705
+ 4 New high-value                      |      7189
+ 5 New                                 |     16710
+ 6 Lapsed high-value (win-back target) |     11688
+ 7 Lapsed low-value                    |     26557
+(7 rows)
+

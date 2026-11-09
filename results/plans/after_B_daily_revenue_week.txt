@@ -1,0 +1,26 @@
+GroupAggregate  (cost=6337.27..6388.09 rows=1665 width=44) (actual time=28.436..28.862 rows=7 loops=1)
+  Group Key: ((date_trunc('day'::text, o.purchase_ts))::date)
+  Buffers: shared hit=3781
+  ->  Sort  (cost=6337.27..6342.69 rows=2168 width=43) (actual time=28.362..28.499 rows=2279 loops=1)
+        Sort Key: ((date_trunc('day'::text, o.purchase_ts))::date), o.order_id
+        Sort Method: quicksort  Memory: 257kB
+        Buffers: shared hit=3781
+        ->  Hash Join  (cost=1993.56..6217.14 rows=2168 width=43) (actual time=2.851..26.933 rows=2279 loops=1)
+              Hash Cond: (i.order_id = o.order_id)
+              Buffers: shared hit=3775
+              ->  Seq Scan on order_items i  (cost=0.00..3878.03 rows=127503 width=39) (actual time=0.004..9.674 rows=127503 loops=1)
+                    Buffers: shared hit=2603
+              ->  Hash  (cost=1972.75..1972.75 rows=1665 width=41) (actual time=2.802..2.803 rows=1743 loops=1)
+                    Buckets: 2048  Batches: 1  Memory Usage: 141kB
+                    Buffers: shared hit=1172
+                    ->  Bitmap Heap Scan on orders o  (cost=37.36..1972.75 rows=1665 width=41) (actual time=0.374..2.307 rows=1743 loops=1)
+                          Recheck Cond: ((purchase_ts >= '2018-06-01 00:00:00'::timestamp without time zone) AND (purchase_ts < '2018-06-08 00:00:00'::timestamp without time zone) AND (order_status = 'delivered'::text))
+                          Heap Blocks: exact=1165
+                          Buffers: shared hit=1172
+                          ->  Bitmap Index Scan on idx_orders_delivered_purchase  (cost=0.00..36.94 rows=1665 width=0) (actual time=0.232..0.232 rows=1743 loops=1)
+                                Index Cond: ((purchase_ts >= '2018-06-01 00:00:00'::timestamp without time zone) AND (purchase_ts < '2018-06-08 00:00:00'::timestamp without time zone))
+                                Buffers: shared hit=7
+Planning:
+  Buffers: shared hit=265
+Planning Time: 0.765 ms
+Execution Time: 28.941 ms

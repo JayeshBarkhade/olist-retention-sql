@@ -1,0 +1,37 @@
+== A. Successful transaction: both statements commit together
+ order_id | order_status 
+----------+--------------
+ 000338a7 | canceled
+ 00206963 | shipped
+ 002c55a1 | shipped
+(3 rows)
+
+ order_id | old_status | new_status 
+----------+------------+------------
+ 000338a7 | shipped    | canceled
+(1 row)
+
+== B. Failing statement inside a transaction block: the whole block is undone (CHECK violation)
+ order_id | order_status 
+----------+--------------
+ 000338a7 | canceled
+ 00206963 | shipped
+ 002c55a1 | shipped
+(3 rows)
+
+ log_rows_after_failed_attempt 
+-------------------------------
+                             1
+(1 row)
+
+== C. Explicit ROLLBACK: DELETE everything, look, then undo
+ rows_inside_transaction 
+-------------------------
+                       0
+(1 row)
+
+ rows_after_rollback 
+---------------------
+                   3
+(1 row)
+

@@ -1,0 +1,22 @@
+       category        | rank_in_category | product  | units | revenue_rs 
+-----------------------+------------------+----------+-------+------------
+ bed_bath_table        |                1 | 19584e94 |  3980 |     729623
+ bed_bath_table        |                2 | 70ff8372 |  2031 |     257861
+ bed_bath_table        |                3 | 3d142d4a |  1454 |     193487
+ sports_leisure        |                1 | 1e3296a9 |   693 |    1364046
+ sports_leisure        |                2 | 505532ce |  1250 |     303456
+ sports_leisure        |                3 | ea1164d2 |   325 |      62717
+ health_beauty         |                1 | 3f2cba08 |  1992 |     302426
+ health_beauty         |                2 | 520d7451 |   583 |      76055
+ health_beauty         |                3 | b830f172 |   828 |      61380
+ computers_accessories |                1 | 1285af0c |  1005 |     313436
+ computers_accessories |                2 | 7e74551c |   371 |      74803
+ computers_accessories |                3 | 45ff0458 |    55 |      42593
+ housewares            |                1 | 24bede67 |   340 |     109742
+ housewares            |                2 | 89094b07 |   126 |      85171
+ housewares            |                3 | 4148c1eb |   252 |      72156
+ watches_gifts         |                1 | 5bff7799 |    53 |      42460
+ watches_gifts         |                2 | cf5889bf |   576 |      34238
+ watches_gifts         |                3 | 2ff5d4c3 |   222 |      22346
+(18 rows)
+

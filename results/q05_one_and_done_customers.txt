@@ -1,0 +1,5 @@
+ eligible_customers | never_returned | never_returned_pct | avg_first_order_of_lost_rs | total_first_order_value_of_lost_rs 
+--------------------+----------------+--------------------+----------------------------+------------------------------------
+              43571 |          32476 |               74.5 |                     198.14 |                            6434664
+(1 row)
+

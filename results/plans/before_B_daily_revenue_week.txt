@@ -1,0 +1,28 @@
+GroupAggregate  (cost=7525.11..7817.60 rows=1665 width=44) (actual time=22.580..25.165 rows=7 loops=1)
+  Group Key: ((date_trunc('day'::text, o.purchase_ts))::date)
+  Buffers: shared hit=4578
+  ->  Gather Merge  (cost=7525.11..7772.20 rows=2168 width=43) (actual time=22.416..24.789 rows=2279 loops=1)
+        Workers Planned: 1
+        Workers Launched: 1
+        Buffers: shared hit=4578
+        ->  Sort  (cost=6525.10..6528.29 rows=1275 width=43) (actual time=20.845..20.905 rows=1140 loops=2)
+              Sort Key: ((date_trunc('day'::text, o.purchase_ts))::date), o.order_id
+              Sort Method: quicksort  Memory: 131kB
+              Buffers: shared hit=4578
+              Worker 0:  Sort Method: quicksort  Memory: 126kB
+              ->  Parallel Hash Join  (cost=2903.05..6459.34 rows=1275 width=43) (actual time=4.683..19.933 rows=1140 loops=2)
+                    Hash Cond: (i.order_id = o.order_id)
+                    Buffers: shared hit=4534
+                    ->  Parallel Seq Scan on order_items i  (cost=0.00..3353.02 rows=75002 width=39) (actual time=0.003..6.163 rows=63752 loops=2)
+                          Buffers: shared hit=2603
+                    ->  Parallel Hash  (cost=2890.81..2890.81 rows=979 width=41) (actual time=4.551..4.551 rows=872 loops=2)
+                          Buckets: 2048  Batches: 1  Memory Usage: 176kB
+                          Buffers: shared hit=1883
+                          ->  Parallel Seq Scan on orders o  (cost=0.00..2890.81 rows=979 width=41) (actual time=0.011..4.308 rows=872 loops=2)
+                                Filter: ((purchase_ts >= '2018-06-01 00:00:00'::timestamp without time zone) AND (purchase_ts < '2018-06-08 00:00:00'::timestamp without time zone) AND (order_status = 'delivered'::text))
+                                Rows Removed by Filter: 48080
+                                Buffers: shared hit=1883
+Planning:
+  Buffers: shared hit=203
+Planning Time: 0.621 ms
+Execution Time: 25.246 ms

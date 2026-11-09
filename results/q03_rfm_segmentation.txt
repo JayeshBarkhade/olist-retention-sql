@@ -1,0 +1,11 @@
+                segment                | customers | pct_customers | avg_spend_rs | pct_revenue 
+---------------------------------------+-----------+---------------+--------------+-------------
+ 1 Champions (repeat, recent)          |      6621 |           8.7 |          441 |        15.8
+ 2 Loyal (repeat)                      |      5827 |           7.6 |          430 |        13.6
+ 3 At-risk repeat buyers               |      1705 |           2.2 |          409 |         3.8
+ 4 New high-value                      |      7189 |           9.4 |          396 |        15.5
+ 5 New                                 |     16710 |          21.9 |          113 |        10.2
+ 6 Lapsed high-value (win-back target) |     11688 |          15.3 |          392 |        24.9
+ 7 Lapsed low-value                    |     26557 |          34.8 |          113 |        16.2
+(7 rows)
+
